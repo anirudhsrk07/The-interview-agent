@@ -249,7 +249,7 @@ function App() {
               </h1>
 
               <div className="intro-subtitle">
-                LUXURY AI INTERVIEW INTELLIGENCE
+                 AI INTERVIEW INTELLIGENCE
               </div>
 
               <div className="intro-loader-line">
