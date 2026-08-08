@@ -1103,7 +1103,7 @@ function App() {
                     <div className="input-group">
                       <label>Job Role</label>
                       <div className="input-wrapper">
-                        <Briefcase size={18} className="input-icon" />
+                        <Briefcase size={9} className="input-icon" />
                         <input
                           type="text"
                           value={jobRole}
@@ -1117,7 +1117,7 @@ function App() {
                     <div className="input-group">
                       <label>Experience</label>
                       <div className="input-wrapper">
-                        <Sliders size={18} className="input-icon" />
+                        <Sliders size={9} className="input-icon" />
                         <select
                           value={experience}
                           onChange={(e) => setExperience(e.target.value)}
