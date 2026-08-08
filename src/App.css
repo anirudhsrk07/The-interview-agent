@@ -127,15 +127,15 @@ body {
 }
 
 .intro-loader-bar {
-  width: 100%;
+  width: 0%;
   height: 100%;
-  background: linear-gradient(90deg, transparent, var(--gold-primary), transparent);
-  animation: introLoading 2.4s cubic-bezier(0.65, 0, 0.35, 1) forwards;
+  background: linear-gradient(90deg, var(--gold-bronze), var(--gold-primary), var(--gold-light));
+  animation: introLoading 2.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 @keyframes introLoading {
-  0% { transform: translateX(-100%); }
-  100% { transform: translateX(100%); }
+  0% { width: 0%; }
+  100% { width: 100%; }
 }
 
 /* Background Subtle Ambient Layers (Toned Down, Non-Harsh) */

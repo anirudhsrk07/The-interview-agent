@@ -227,40 +227,30 @@ function App() {
             className="intro-overlay"
             initial={{ opacity: 1 }}
             exit={{ opacity: 0, y: -30, scale: 0.96 }}
-            transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+            transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
           >
             <motion.div
               className="intro-content"
-              initial={{ y: -150, opacity: 0 }}
+              initial={{ y: -90, opacity: 1 }}
               animate={{ y: 0, opacity: 1 }}
               transition={{
                 type: "spring",
-                stiffness: 110,
-                damping: 14,
-                delay: 0.1
+                stiffness: 140,
+                damping: 16,
+                delay: 0
               }}
             >
               <div className="intro-icon-ring">
                 <Sparkles size={44} color="#d4af37" />
               </div>
 
-              <motion.h1
-                className="intro-brand-name"
-                initial={{ scale: 0.9 }}
-                animate={{ scale: 1 }}
-                transition={{ duration: 0.5, delay: 0.3 }}
-              >
+              <h1 className="intro-brand-name">
                 Mockify
-              </motion.h1>
+              </h1>
 
-              <motion.div
-                className="intro-subtitle"
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.5 }}
-              >
+              <div className="intro-subtitle">
                 LUXURY AI INTERVIEW INTELLIGENCE
-              </motion.div>
+              </div>
 
               <div className="intro-loader-line">
                 <div className="intro-loader-bar"></div>
