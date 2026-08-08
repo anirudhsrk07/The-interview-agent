@@ -965,11 +965,104 @@ body {
   transition: width 1s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
+/* Resume Agent */
+.resume-agent-grid {
+  display: grid;
+  grid-template-columns: 1.05fr 0.95fr;
+  gap: 28px;
+}
+
+.resume-agent-card {
+  padding: 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  border: 1px solid rgba(212, 175, 55, 0.22);
+  box-shadow: 0 18px 45px rgba(2, 6, 23, 0.35);
+}
+
+.profile-role-pill {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px;
+  border-radius: 14px;
+  background: linear-gradient(135deg, rgba(212, 175, 55, 0.14), rgba(255, 255, 255, 0.04));
+  border: 1px solid rgba(212, 175, 55, 0.2);
+  color: var(--text-muted);
+  font-size: 0.9rem;
+}
+
+.profile-role-pill strong {
+  color: var(--gold-light);
+  font-weight: 700;
+}
+
+.upload-box {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 76px;
+  padding: 16px;
+  border: 1px dashed rgba(212, 175, 55, 0.35);
+  border-radius: 14px;
+  background: rgba(212, 175, 55, 0.06);
+  color: var(--text-muted);
+  cursor: pointer;
+  text-align: center;
+  transition: all 0.2s ease;
+}
+
+.upload-box:hover {
+  border-color: var(--gold-primary);
+  background: rgba(212, 175, 55, 0.1);
+}
+
+.upload-box input {
+  display: none;
+}
+
+.upload-box span {
+  font-size: 0.95rem;
+}
+
+.resume-empty-state {
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 14px;
+  padding: 20px;
+}
+
+.resume-empty-state h3 {
+  font-family: var(--font-heading);
+  font-size: 1.3rem;
+  font-weight: 700;
+}
+
+.resume-empty-state p {
+  color: var(--text-muted);
+  max-width: 380px;
+  line-height: 1.6;
+}
+
 /* Features Grid */
 .features-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 28px;
+}
+
+.section-title {
+  letter-spacing: -0.02em;
+}
+
+.section-desc {
+  font-size: 1.02rem;
 }
 
 .feature-card {
@@ -1331,7 +1424,8 @@ body {
   .features-grid,
   .workflow-steps,
   .testimonials-grid,
-  .pricing-grid {
+  .pricing-grid,
+  .resume-agent-grid {
     grid-template-columns: repeat(2, 1fr);
   }
   

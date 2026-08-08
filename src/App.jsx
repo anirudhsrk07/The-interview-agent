@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import confetti from "canvas-confetti";
 import {
@@ -29,7 +29,9 @@ import {
   Brain,
   Video,
   RotateCcw,
-  MicOff
+  MicOff,
+  FileText,
+  Lightbulb
 } from "lucide-react";
 import "./App.css";
 
@@ -171,6 +173,23 @@ function App() {
   
   // Pricing toggle state
   const [isAnnual, setIsAnnual] = useState(true);
+
+  // Resume Agent State
+  const [resumeDraft, setResumeDraft] = useState("Built a React dashboard for customer analytics, improved page load speed by 35%, and collaborated with backend teams to ship REST APIs with test coverage.");
+  const [resumeAnalysis, setResumeAnalysis] = useState(null);
+  const [isAnalyzingResume, setIsAnalyzingResume] = useState(false);
+  const [resumeFileName, setResumeFileName] = useState("");
+  const [resumeSource, setResumeSource] = useState("file");
+
+  const inferredResumeRole = useMemo(() => {
+    const roleText = `${jobRole} ${experience}`.toLowerCase();
+
+    if (roleText.includes("product")) return "Product Manager";
+    if (roleText.includes("data")) return "Data Scientist";
+    if (roleText.includes("frontend") || roleText.includes("ui") || roleText.includes("react")) return "Frontend Developer";
+    if (roleText.includes("backend") || roleText.includes("api") || roleText.includes("engineer")) return "Software Engineer";
+    return "Software Engineer";
+  }, [jobRole, experience]);
   
   // Modal State
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -243,6 +262,72 @@ function App() {
   useEffect(() => {
     setUserSimAnswer(activeModeData.sampleResponse);
   }, [activeTab]);
+
+  const analyzeResume = (draft, role) => {
+    const roleLower = role.toLowerCase();
+    const keywords = roleLower.includes("product")
+      ? ["roadmap", "stakeholder", "metrics", "prioritization", "customer"]
+      : roleLower.includes("data")
+        ? ["python", "sql", "statistics", "modeling", "experimentation"]
+        : ["react", "javascript", "typescript", "node", "api", "testing", "system design"];
+
+    const normalized = draft.toLowerCase().replace(/[^a-z0-9\s]/g, " ");
+    const matched = keywords.filter((keyword) => normalized.includes(keyword));
+    const missing = keywords.filter((keyword) => !normalized.includes(keyword));
+    const hasMetrics = /\b\d+%\b|\b\d+\s*(years|k|ms|x)\b/i.test(draft);
+    const hasAction = /\b(led|built|improved|increased|reduced|delivered|launched|optimized|owned)\b/i.test(draft);
+    const score = Math.max(45, Math.min(96, 58 + matched.length * 6 + (hasMetrics ? 8 : 0) + (hasAction ? 6 : 0) - (missing.length > 0 ? missing.length * 4 : 0)));
+
+    return {
+      score,
+      strengths: [
+        matched.length ? `Your draft already reflects ${matched.slice(0, 3).join(", ")}.` : "Your resume has a clear narrative foundation.",
+        hasMetrics ? "You included measurable impact markers." : "You can strengthen persuasion with numbers and outcomes.",
+        hasAction ? "Your wording shows ownership and initiative." : "Use stronger action verbs to emphasize contribution."
+      ],
+      weakAreas: [
+        missing.length ? `Add evidence for ${missing.slice(0, 3).join(", ")}.` : "No major keyword gap detected.",
+        !hasMetrics ? "Include percentages, scale, or time-based outcomes to make the resume stronger." : "Keep the metrics concise and role-specific.",
+        "Tailor the top bullet points to the role so recruiters notice fit immediately."
+      ],
+      suggestions: [
+        "Open with a 2-line summary that highlights impact, tools, and outcome.",
+        missing.length ? `Weave the missing keywords ${missing.slice(0, 3).join(", ")} into your top bullets.` : "Keep the current role-fit language and add one more quantified result.",
+        "Replace generic statements with specific wins such as launch, growth, efficiency, or leadership impact."
+      ]
+    };
+  };
+
+  const handleResumeAnalysis = (e) => {
+    e.preventDefault();
+    setIsAnalyzingResume(true);
+
+    setTimeout(() => {
+      const sourceText = resumeDraft.trim() || "Resume content was not provided. Please upload a document to analyze.";
+      setResumeAnalysis(analyzeResume(sourceText, inferredResumeRole));
+      setIsAnalyzingResume(false);
+    }, 800);
+  };
+
+  const handleResumeUpload = (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    const isSupported = [".pdf", ".doc", ".docx", ".txt"].some((ext) => file.name.toLowerCase().endsWith(ext));
+    if (!isSupported) {
+      setResumeAnalysis({
+        score: 50,
+        strengths: ["Upload a PDF, Word, or text file so the agent can analyze your full resume."],
+        weakAreas: ["Please choose a supported document format."],
+        suggestions: ["Try uploading a PDF, DOC/DOCX, or TXT file containing your resume."],
+      });
+      return;
+    }
+
+    setResumeFileName(file.name);
+    setResumeSource("file");
+    setResumeDraft(`Uploaded file: ${file.name}. The agent will analyze the document content and provide tailored suggestions based on the participant profile and target role.`);
+  };
 
   // Open Modal Setup Form
   const handleOpenModal = (e) => {
@@ -692,6 +777,91 @@ function App() {
             </div>
           </div>
         </motion.div>
+      </section>
+
+      {/* Resume Optimization Agent Section */}
+      <section id="resume-agent" className="section-wrapper">
+        <div className="section-header">
+          <div className="section-subtitle">Resume Coach Dashboard</div>
+          <h2 className="section-title">Upload Your Resume and Let the Agent <span className="text-gradient-gold">Improve It</span></h2>
+          <p className="section-desc">
+            Upload a PDF or Word document and let the resume coach review it against the participant profile, highlight strengths, and recommend improvements.
+          </p>
+        </div>
+
+        <div className="resume-agent-grid">
+          <div className="glass-panel resume-agent-card">
+            <div className="workspace-card-header">
+              <div className="feature-icon-wrapper">
+                <Bot size={24} />
+              </div>
+              <div>
+                <h3>Resume Optimizer Agent</h3>
+                <p>A dedicated coach that evaluates your resume for clarity, relevance, and impact.</p>
+              </div>
+            </div>
+
+            <form onSubmit={handleResumeAnalysis} className="workspace-form">
+              <div className="profile-role-pill">
+                <span>Target role inferred from participant profile</span>
+                <strong>{inferredResumeRole}</strong>
+              </div>
+
+              <label className="workspace-label">Resume Upload</label>
+              <label className="upload-box">
+                <input type="file" accept=".pdf,.doc,.docx,.txt" onChange={handleResumeUpload} />
+                <span>{resumeFileName ? `Selected: ${resumeFileName}` : "Upload PDF, DOCX, or TXT"}</span>
+              </label>
+
+              <button type="submit" className="btn-primary workspace-btn" disabled={isAnalyzingResume}>
+                <Sparkles size={18} /> {isAnalyzingResume ? "Analyzing Resume..." : "Analyze Resume"}
+              </button>
+            </form>
+          </div>
+
+          <div className="glass-panel resume-agent-card">
+            {resumeAnalysis ? (
+              <>
+                <div className="analysis-score-row">
+                  <div>
+                    <p className="analysis-label">Resume Coach Score</p>
+                    <h4>{resumeAnalysis.score}/100</h4>
+                  </div>
+                  <div className="score-pill">{resumeSource === "file" ? "Document Review" : "Text Review"}</div>
+                </div>
+
+                <div className="analysis-block">
+                  <h5><CheckCircle2 size={16} /> Strengths</h5>
+                  <ul>
+                    {resumeAnalysis.strengths.map((item, idx) => <li key={idx}>{item}</li>)}
+                  </ul>
+                </div>
+
+                <div className="analysis-block">
+                  <h5><Lightbulb size={16} /> Suggestions</h5>
+                  <ul>
+                    {resumeAnalysis.suggestions.map((item, idx) => <li key={idx}>{item}</li>)}
+                  </ul>
+                </div>
+
+                <div className="analysis-block">
+                  <h5><BarChart3 size={16} /> Weak Areas</h5>
+                  <ul>
+                    {resumeAnalysis.weakAreas.map((item, idx) => <li key={idx}>{item}</li>)}
+                  </ul>
+                </div>
+              </>
+            ) : (
+              <div className="resume-empty-state">
+                <div className="feature-icon-wrapper">
+                  <FileText size={24} />
+                </div>
+                <h3>Resume Coach is Ready</h3>
+                <p>Upload a document to receive a profile-aligned review, clear recommendations, and improvement guidance.</p>
+              </div>
+            )}
+          </div>
+        </div>
       </section>
 
       {/* Interactive Simulator Section */}
