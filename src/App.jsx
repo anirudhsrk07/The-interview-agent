@@ -1101,9 +1101,9 @@ function App() {
                 {modalStep === 0 && (
                   <form onSubmit={handleLaunchChamber} style={{ textAlign: "left", marginTop: "12px" }}>
                     <div className="input-group">
-                      <label>Job Role</label>
+                            <label>Job Role</label>
                       <div className="input-wrapper">
-                        <Briefcase size={9} className="input-icon" />
+                        <Briefcase size={18} className="input-icon" />
                         <input
                           type="text"
                           value={jobRole}
@@ -1116,7 +1116,7 @@ function App() {
 
                     <div className="input-group">
                       <label>Experience</label>
-                      <div className="input-wrapper">
+                             <div className="input-wrapper">
                         <Sliders size={9} className="input-icon" />
                         <select
                           value={experience}
