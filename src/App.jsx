@@ -152,7 +152,8 @@ function App() {
 
   // Form State
   const [jobRole, setJobRole] = useState("Software Engineer");
-  const [experience, setExperience] = useState("3-5 Years");
+  const [experience, setExperience] = useState("Fresher");
+  const [difficulty, setDifficulty] = useState("Medium");
   
   // Interactive Simulator State
   const [activeTab, setActiveTab] = useState("technical");
@@ -164,7 +165,7 @@ function App() {
   
   // Modal State
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [modalStep, setModalStep] = useState(1);
+  const [modalStep, setModalStep] = useState(0);
 
   // Automatic 2.6-second timer to hold Intro in center and then hide
   useEffect(() => {
@@ -188,10 +189,16 @@ function App() {
     setUserSimAnswer(activeModeData.sampleResponse);
   }, [activeTab]);
 
-  // Handle Form Submit / Start Interview
-  const handleStartInterview = (e) => {
+  // Open Modal Setup Form
+  const handleOpenModal = (e) => {
     if (e) e.preventDefault();
     setIsModalOpen(true);
+    setModalStep(0);
+  };
+
+  // Submit Form & Launch AI Chamber Simulation
+  const handleLaunchChamber = (e) => {
+    if (e) e.preventDefault();
     setModalStep(1);
     
     // Simulate AI environment initialization sequence
@@ -199,11 +206,11 @@ function App() {
     setTimeout(() => {
       setModalStep(3);
       confetti({
-        particleCount: 100,
-        spread: 70,
+        particleCount: 120,
+        spread: 80,
         origin: { y: 0.6 }
       });
-    }, 2500);
+    }, 2400);
   };
 
   // Simulate Instant AI Re-evaluation
@@ -239,7 +246,7 @@ function App() {
               </h1>
 
               <div className="intro-subtitle">
-                AI INTERVIEW INTELLIGENCE
+              Your AI-powered interview coach.
               </div>
 
               <div className="intro-loader-line">
@@ -284,7 +291,7 @@ function App() {
             AI Core Active
           </div>
           
-          <button className="btn-primary" onClick={handleStartInterview}>
+          <button className="btn-primary" onClick={handleOpenModal}>
             Start Session <ArrowRight size={16} />
           </button>
         </div>
@@ -319,16 +326,16 @@ function App() {
               </h3>
             </div>
 
-            <form onSubmit={handleStartInterview}>
+            <form onSubmit={handleLaunchChamber}>
               <div className="input-group">
-                <label>Job Role Target</label>
+                <label>Job Role</label>
                 <div className="input-wrapper">
                   <Briefcase size={18} className="input-icon" />
                   <input
                     type="text"
                     value={jobRole}
                     onChange={(e) => setJobRole(e.target.value)}
-                    placeholder="Enter Job Role (e.g. Software Engineer)"
+                    placeholder="Software Engineer"
                     required
                   />
                 </div>
@@ -347,23 +354,41 @@ function App() {
               </div>
 
               <div className="input-group">
-                <label>Experience Tier</label>
+                <label>Experience</label>
                 <div className="input-wrapper">
                   <Sliders size={18} className="input-icon" />
                   <select
                     value={experience}
                     onChange={(e) => setExperience(e.target.value)}
                   >
-                    <option>Fresher (0-1 Years)</option>
-                    <option>1-2 Years</option>
-                    <option>3-5 Years</option>
-                    <option>5+ Years (Senior / Lead)</option>
+                    <option value="Fresher">Fresher (0-1 Years)</option>
+                    <option value="1-2 Years">1-2 Years</option>
+                    <option value="3-5 Years">3-5 Years</option>
+                    <option value="5+ Years">5+ Years (Senior / Lead)</option>
                   </select>
                 </div>
               </div>
 
+              <div className="input-group">
+                <label>Difficulty</label>
+                <div className="difficulty-radio-group">
+                  {["Easy", "Medium", "Hard"].map((level) => (
+                    <div
+                      key={level}
+                      className={`radio-label ${difficulty === level ? "active" : ""}`}
+                      onClick={() => setDifficulty(level)}
+                    >
+                      <div className="radio-circle">
+                        {difficulty === level && <div className="radio-dot" />}
+                      </div>
+                      <span>{level}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
               <button type="submit" className="btn-primary hero-submit-btn">
-                <Play size={18} fill="currentColor" /> Launch Practice Chamber
+                Start Interview <ArrowRight size={18} />
               </button>
             </form>
           </div>
@@ -731,7 +756,7 @@ function App() {
                 <li><Check size={16} /> Performance Summary</li>
               </ul>
             </div>
-            <button className="btn-secondary" style={{ width: "100%" }} onClick={handleStartInterview}>
+            <button className="btn-secondary" style={{ width: "100%" }} onClick={handleOpenModal}>
               Select Starter
             </button>
           </div>
@@ -755,7 +780,7 @@ function App() {
                 <li><Check size={16} /> Sub-second AI Evaluation Reports</li>
               </ul>
             </div>
-            <button className="btn-primary" style={{ width: "100%", justifyContent: "center" }} onClick={handleStartInterview}>
+            <button className="btn-primary" style={{ width: "100%", justifyContent: "center" }} onClick={handleOpenModal}>
               Start 7-Day Free Trial
             </button>
           </div>
@@ -777,7 +802,7 @@ function App() {
                 <li><Check size={16} /> Priority Technical Support</li>
               </ul>
             </div>
-            <button className="btn-secondary" style={{ width: "100%" }} onClick={handleStartInterview}>
+            <button className="btn-secondary" style={{ width: "100%" }} onClick={handleOpenModal}>
               Contact Sales
             </button>
           </div>
@@ -791,7 +816,7 @@ function App() {
           <p style={{ maxWidth: "600px", color: "#94a3b8", fontSize: "1.1rem" }}>
             Join thousands of software engineers and architects who leveled up their interview performance with Mockify.
           </p>
-          <button className="btn-primary" style={{ padding: "16px 36px", fontSize: "1.1rem" }} onClick={handleStartInterview}>
+          <button className="btn-primary" style={{ padding: "16px 36px", fontSize: "1.1rem" }} onClick={handleOpenModal}>
             <Sparkles size={20} /> Launch AI Interview Chamber
           </button>
         </div>
@@ -844,11 +869,67 @@ function App() {
                 </div>
 
                 <h3 style={{ fontFamily: "var(--font-heading)", fontSize: "1.6rem", fontWeight: 800, marginBottom: "8px" }}>
-                  Preparing AI Chamber
+                  {modalStep === 0 ? "Start AI Interview" : "Preparing AI Chamber"}
                 </h3>
-                <p style={{ color: "#94a3b8", fontSize: "0.9rem", marginBottom: "24px" }}>
-                  Generating customized rubric for <strong>{jobRole}</strong> ({experience})
+                <p style={{ color: "#94a3b8", fontSize: "0.9rem", marginBottom: "20px" }}>
+                  {modalStep === 0 ? "Configure session parameters before entering chamber" : `Generating rubric for ${jobRole} (${experience} • ${difficulty})`}
                 </p>
+
+                {modalStep === 0 && (
+                  <form onSubmit={handleLaunchChamber} style={{ textAlign: "left", marginTop: "12px" }}>
+                    <div className="input-group">
+                      <label>Job Role</label>
+                      <div className="input-wrapper">
+                        <Briefcase size={18} className="input-icon" />
+                        <input
+                          type="text"
+                          value={jobRole}
+                          onChange={(e) => setJobRole(e.target.value)}
+                          placeholder="Software Engineer"
+                          required
+                        />
+                      </div>
+                    </div>
+
+                    <div className="input-group">
+                      <label>Experience</label>
+                      <div className="input-wrapper">
+                        <Sliders size={18} className="input-icon" />
+                        <select
+                          value={experience}
+                          onChange={(e) => setExperience(e.target.value)}
+                        >
+                          <option value="Fresher">Fresher (0-1 Years)</option>
+                          <option value="1-2 Years">1-2 Years</option>
+                          <option value="3-5 Years">3-5 Years</option>
+                          <option value="5+ Years">5+ Years (Senior / Lead)</option>
+                        </select>
+                      </div>
+                    </div>
+
+                    <div className="input-group">
+                      <label>Difficulty</label>
+                      <div className="difficulty-radio-group">
+                        {["Easy", "Medium", "Hard"].map((level) => (
+                          <div
+                            key={level}
+                            className={`radio-label ${difficulty === level ? "active" : ""}`}
+                            onClick={() => setDifficulty(level)}
+                          >
+                            <div className="radio-circle">
+                              {difficulty === level && <div className="radio-dot" />}
+                            </div>
+                            <span>{level}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    <button type="submit" className="btn-primary hero-submit-btn" style={{ marginTop: "24px" }}>
+                      Start Interview <ArrowRight size={18} />
+                    </button>
+                  </form>
+                )}
 
                 {modalStep === 1 && (
                   <div style={{ padding: "30px", display: "flex", flexDirection: "column", alignItems: "center", gap: "16px" }}>
@@ -869,9 +950,9 @@ function App() {
                     <div style={{ display: "inline-flex", padding: "12px", borderRadius: "50%", background: "rgba(212, 175, 55, 0.15)", color: "#d4af37", marginBottom: "16px" }}>
                       <CheckCircle2 size={36} />
                     </div>
-                    <h4 style={{ fontSize: "1.2rem", fontWeight: 700, marginBottom: "8px" }}>Interview Environment Ready</h4>
+                    <h4 style={{ fontSize: "1.2rem", fontWeight: 700, marginBottom: "8px" }}>Interview Chamber Ready</h4>
                     <p style={{ color: "#94a3b8", fontSize: "0.9rem", marginBottom: "24px" }}>
-                      Your AI Senior Lead is ready to conduct your session.
+                      Your AI Senior Evaluator is waiting in the private session chamber for <strong>{jobRole}</strong> ({difficulty} Difficulty).
                     </p>
 
                     <button
