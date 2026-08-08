@@ -3,7 +3,7 @@ import "./App.css";
 function App() {
   return (
     <div className="app">
-      <h1> The Interview Agent </h1>
+      <h1> Mockify </h1>
 
       <p>
         Practice AI-powered mock interviews and receive instant feedback.
