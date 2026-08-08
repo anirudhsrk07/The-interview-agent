@@ -28,7 +28,8 @@ import {
   Terminal,
   Brain,
   Video,
-  RotateCcw
+  RotateCcw,
+  MicOff
 } from "lucide-react";
 import "./App.css";
 
@@ -155,6 +156,14 @@ function App() {
   const [experience, setExperience] = useState("Fresher");
   const [difficulty, setDifficulty] = useState("Medium");
   
+  // Active Session Room State
+  const [inActiveSession, setInActiveSession] = useState(false);
+  const [sessionQuestionIndex, setSessionQuestionIndex] = useState(0);
+  const [sessionTime, setSessionTime] = useState(0);
+  const [isMicMuted, setIsMicMuted] = useState(false);
+  const [liveResponse, setLiveResponse] = useState(
+    "For high availability and fault isolation, I decouple services using Apache Kafka and implement circuit breakers with Redis caching."
+  );
   // Interactive Simulator State
   const [activeTab, setActiveTab] = useState("technical");
   const [userSimAnswer, setUserSimAnswer] = useState("");
@@ -166,6 +175,52 @@ function App() {
   // Modal State
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalStep, setModalStep] = useState(0);
+
+  // Active Session Timer Effect
+  useEffect(() => {
+    let interval = null;
+    if (inActiveSession) {
+      interval = setInterval(() => {
+        setSessionTime((prev) => prev + 1);
+      }, 1000);
+    } else {
+      setSessionTime(0);
+    }
+    return () => clearInterval(interval);
+  }, [inActiveSession]);
+
+  const formatTimer = (seconds) => {
+    const mins = Math.floor(seconds / 60);
+    const secs = seconds % 60;
+    return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+  };
+
+  // Enter Live Interview Chamber
+  const handleEnterLiveChamber = () => {
+    setIsModalOpen(false);
+    setInActiveSession(true);
+    setSessionQuestionIndex(0);
+    setSessionEvaluated(false);
+  };
+
+  // Exit Session back to landing page
+  const handleEndSession = () => {
+    setInActiveSession(false);
+  };
+
+  // Submit Answer in Live Room
+  const handleSubmitLiveAnswer = () => {
+    setIsSessionEvaluating(true);
+    setTimeout(() => {
+      setIsSessionEvaluating(false);
+      setSessionEvaluated(true);
+      confetti({
+        particleCount: 80,
+        spread: 60,
+        origin: { y: 0.5 }
+      });
+    }, 900);
+  };
 
   // Automatic 2.6-second timer to hold Intro in center and then hide
   useEffect(() => {
@@ -220,6 +275,176 @@ function App() {
       setIsEvaluating(false);
     }, 800);
   };
+
+  // Render Full-Screen Active Interview Chamber Room when inActiveSession is true
+  if (inActiveSession) {
+    return (
+      <div className="active-session-container">
+        {/* Session Top Navbar */}
+        <div className="session-navbar">
+          <div className="nav-brand" onClick={handleEndSession}>
+            <div className="brand-icon-box" style={{ width: 32, height: 32 }}>
+              <Sparkles size={16} color="#06070a" />
+            </div>
+            <span className="text-gradient-gold">Mockify Live</span>
+          </div>
+
+          <div className="session-meta-pills">
+            <span className="meta-pill">Role: {jobRole}</span>
+            <span className="meta-pill">Level: {experience}</span>
+            <span className="meta-pill" style={{ borderColor: "#d4af37", color: "#f3e5ab" }}>
+              Difficulty: {difficulty}
+            </span>
+          </div>
+
+          <div style={{ display: "flex", alignItems: "center", gap: "20px" }}>
+            <div className="session-timer">
+              <Clock size={18} color="#10b981" /> {formatTimer(sessionTime)}
+            </div>
+            <button className="btn-danger" onClick={handleEndSession}>
+              <X size={16} /> End Session & Exit
+            </button>
+          </div>
+        </div>
+
+        {/* Live Session Body */}
+        <div className="session-body">
+          {/* Left Column: AI Avatar & Question */}
+          <div className="session-card">
+            <div className="ai-evaluator-box">
+              <div style={{ display: "flex", alignItems: "center", gap: "14px" }}>
+                <div className="ai-avatar" style={{ width: 48, height: 48 }}>
+                  <Bot size={26} color="#06070a" />
+                </div>
+                <div>
+                  <h4 style={{ fontSize: "1.05rem", fontWeight: 700 }}>AI Lead Evaluator</h4>
+                  <p style={{ fontSize: "0.8rem", color: "#94a3b8" }}>Session Active • Speech Evaluation Stream</p>
+                </div>
+              </div>
+              <div className="sound-waves">
+                <div className="wave-bar"></div>
+                <div className="wave-bar"></div>
+                <div className="wave-bar"></div>
+                <div className="wave-bar"></div>
+                <div className="wave-bar"></div>
+              </div>
+            </div>
+
+            <div>
+              <div style={{ fontSize: "0.85rem", fontWeight: 700, color: "#d4af37", textTransform: "uppercase", marginBottom: "8px" }}>
+                Question {sessionQuestionIndex + 1} of 3
+              </div>
+              <div className="session-question-card">
+                {sessionQuestionIndex === 0 && (
+                  <span>
+                    "Welcome! Target set for <strong>{jobRole}</strong> ({experience} • {difficulty} Difficulty). Explain how you would design a high-throughput microservices system handling 50,000 requests/sec with zero single points of failure."
+                  </span>
+                )}
+                {sessionQuestionIndex === 1 && (
+                  <span>
+                    "Excellent structure. Now, how do you handle database migration, rollback strategies, and data consistency during high write traffic spikes?"
+                  </span>
+                )}
+                {sessionQuestionIndex === 2 && (
+                  <span>
+                    "Tell me about a time you had to resolve a major architectural bottleneck or technical conflict with team members under tight deadlines."
+                  </span>
+                )}
+              </div>
+            </div>
+
+            <div style={{ marginTop: "auto", display: "flex", gap: "12px" }}>
+              <button
+                className="btn-secondary"
+                onClick={() => {
+                  setSessionQuestionIndex((prev) => (prev + 1) % 3);
+                  setSessionEvaluated(false);
+                }}
+                style={{ width: "100%", justifyContent: "center" }}
+              >
+                Next Question <ChevronRight size={16} />
+              </button>
+            </div>
+          </div>
+
+          {/* Right Column: Candidate Workspace & Real-time Evaluation */}
+          <div className="session-card">
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+              <h4 style={{ fontSize: "1.05rem", fontWeight: 700, display: "flex", alignItems: "center", gap: "8px" }}>
+                <Mic size={18} color="#d4af37" /> Candidate Speech Input
+              </h4>
+              <button
+                className={`btn-secondary ${isMicMuted ? "" : "active"}`}
+                style={{ padding: "6px 14px", fontSize: "0.8rem" }}
+                onClick={() => setIsMicMuted(!isMicMuted)}
+              >
+                {isMicMuted ? <MicOff size={14} /> : <Mic size={14} color="#10b981" />}
+                {isMicMuted ? "Mic Muted" : "Mic Live"}
+              </button>
+            </div>
+
+            <textarea
+              className="session-textarea"
+              value={liveResponse}
+              onChange={(e) => setLiveResponse(e.target.value)}
+              placeholder="Speak or type your response here..."
+            />
+
+            <button
+              className="btn-primary"
+              style={{ justifyContent: "center", padding: "14px" }}
+              onClick={handleSubmitLiveAnswer}
+              disabled={isSessionEvaluating}
+            >
+              {isSessionEvaluating ? (
+                <>
+                  <RefreshCw size={18} className="spin" /> Evaluating Speech & Logic...
+                </>
+              ) : (
+                <>
+                  <Play size={18} fill="currentColor" /> Submit Response to AI Evaluator
+                </>
+              )}
+            </button>
+
+            {/* Evaluation Score Card */}
+            {sessionEvaluated && (
+              <motion.div
+                initial={{ opacity: 0, y: 15 }}
+                animate={{ opacity: 1, y: 0 }}
+                style={{
+                  padding: "20px",
+                  background: "rgba(8, 9, 13, 0.8)",
+                  border: "1px solid rgba(212, 175, 55, 0.3)",
+                  borderRadius: "16px"
+                }}
+              >
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "12px" }}>
+                  <span style={{ fontWeight: 700, fontSize: "0.95rem" }}>Real-time Evaluation Report:</span>
+                  <span style={{ fontSize: "1.4rem", fontWeight: 800, color: "#d4af37" }}>95 / 100</span>
+                </div>
+
+                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "8px", textAlign: "center", fontSize: "0.8rem" }}>
+                  <div style={{ background: "rgba(255,255,255,0.04)", padding: "10px", borderRadius: "8px" }}>
+                    <div style={{ color: "#10b981", fontWeight: 800, fontSize: "1.1rem" }}>96%</div>
+                    <div style={{ color: "#94a3b8" }}>Speech Clarity</div>
+                  </div>
+                  <div style={{ background: "rgba(255,255,255,0.04)", padding: "10px", borderRadius: "8px" }}>
+                    <div style={{ color: "#d4af37", fontWeight: 800, fontSize: "1.1rem" }}>94%</div>
+                    <div style={{ color: "#94a3b8" }}>Technical Depth</div>
+                  </div>
+                  <div style={{ background: "rgba(255,255,255,0.04)", padding: "10px", borderRadius: "8px" }}>
+                    <div style={{ color: "#c5a059", fontWeight: 800, fontSize: "1.1rem" }}>95%</div>
+                    <div style={{ color: "#94a3b8" }}>Structure</div>
+                  </div>
+                </div>
+              </motion.div>
+            )}
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="app-container">
@@ -958,7 +1183,7 @@ function App() {
                     <button
                       className="btn-primary"
                       style={{ width: "100%", justifyContent: "center", padding: "16px" }}
-                      onClick={() => setIsModalOpen(false)}
+                      onClick={handleEnterLiveChamber}
                     >
                       Enter Live Interview Chamber <ChevronRight size={18} />
                     </button>
