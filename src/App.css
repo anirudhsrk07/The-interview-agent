@@ -80,46 +80,60 @@ body {
   align-items: center;
   text-align: center;
   padding: 40px;
+  animation: introSlideDown 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes introSlideDown {
+  0% {
+    transform: translateY(-120px);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(0px);
+    opacity: 1;
+  }
 }
 
 .intro-icon-ring {
   width: 90px;
   height: 90px;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(212, 175, 55, 0.2), rgba(0, 0, 0, 0.8));
+  background: radial-gradient(circle, rgba(212, 175, 55, 0.25), rgba(0, 0, 0, 0.8));
   border: 2px solid var(--gold-primary);
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 0 40px rgba(212, 175, 55, 0.35);
+  box-shadow: 0 0 40px rgba(212, 175, 55, 0.4);
   margin-bottom: 24px;
 }
 
 .intro-brand-name {
-  font-family: var(--font-brand);
+  font-family: var(--font-heading), 'Outfit', 'Cinzel', -apple-system, sans-serif;
   font-size: 4.5rem;
   font-weight: 800;
   letter-spacing: 4px;
-  background: linear-gradient(135deg, #ffffff 0%, var(--gold-light) 40%, var(--gold-primary) 70%, var(--gold-bronze) 100%);
+  color: #f3e5ab;
+  background: linear-gradient(135deg, #ffffff 0%, #f3e5ab 40%, #d4af37 70%, #c5a059 100%);
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
   text-shadow: 0 10px 30px rgba(0, 0, 0, 0.8);
   margin-bottom: 12px;
 }
 
 .intro-subtitle {
-  font-family: var(--font-heading);
+  font-family: var(--font-heading), 'Outfit', sans-serif;
   font-size: 0.95rem;
   letter-spacing: 3px;
   text-transform: uppercase;
   color: var(--gold-bronze);
-  font-weight: 600;
+  font-weight: 700;
 }
 
 .intro-loader-line {
-  width: 180px;
-  height: 3px;
-  background: rgba(255, 255, 255, 0.1);
+  width: 200px;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.12);
   border-radius: 4px;
   margin-top: 28px;
   overflow: hidden;
@@ -129,7 +143,7 @@ body {
 .intro-loader-bar {
   width: 0%;
   height: 100%;
-  background: linear-gradient(90deg, var(--gold-bronze), var(--gold-primary), var(--gold-light));
+  background: linear-gradient(90deg, var(--gold-bronze), var(--gold-primary), #ffffff);
   animation: introLoading 2.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 

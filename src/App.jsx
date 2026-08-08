@@ -229,17 +229,7 @@ function App() {
             exit={{ opacity: 0, y: -30, scale: 0.96 }}
             transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
           >
-            <motion.div
-              className="intro-content"
-              initial={{ y: -90, opacity: 1 }}
-              animate={{ y: 0, opacity: 1 }}
-              transition={{
-                type: "spring",
-                stiffness: 140,
-                damping: 16,
-                delay: 0
-              }}
-            >
+            <div className="intro-content">
               <div className="intro-icon-ring">
                 <Sparkles size={44} color="#d4af37" />
               </div>
@@ -249,13 +239,13 @@ function App() {
               </h1>
 
               <div className="intro-subtitle">
-                 AI INTERVIEW INTELLIGENCE
+                LUXURY AI INTERVIEW INTELLIGENCE
               </div>
 
               <div className="intro-loader-line">
                 <div className="intro-loader-bar"></div>
               </div>
-            </motion.div>
+            </div>
           </motion.div>
         )}
       </AnimatePresence>
