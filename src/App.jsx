@@ -525,7 +525,7 @@ function App() {
 
         <div className="nav-actions">
           <button className="replay-intro-btn" onClick={handleReplayIntro} title="Replay Motion Intro">
-            <RotateCcw size={14} /> Intro
+            <RotateCcw size={14} /> Reload
           </button>
 
           <div className="status-badge">
