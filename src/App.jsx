@@ -286,9 +286,9 @@ function App() {
     }
   }, [showIntro]);
 
-  // Replay Intro trigger
-  const handleReplayIntro = () => {
-    setShowIntro(true);
+  // Reload Application Page
+  const handleReload = () => {
+    window.location.reload();
   };
 
   // Sync simulator answer when tab changes
@@ -666,7 +666,7 @@ function App() {
             </>
           )}
 
-          <button className="replay-intro-btn" onClick={handleReplayIntro} title="Replay Motion Intro">
+          <button className="replay-intro-btn" onClick={handleReload} title="Reload Page">
             <RotateCcw size={14} /> Reload
           </button>
 
