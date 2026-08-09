@@ -188,6 +188,7 @@ function App() {
   const [liveResponse, setLiveResponse] = useState(
     "For high availability and fault isolation, I decouple services using Apache Kafka and implement circuit breakers with Redis caching."
   );
+  const [activeSessionTab, setActiveSessionTab] = useState("live");
   // Interactive Simulator State
   const [activeTab, setActiveTab] = useState("technical");
   const [userSimAnswer, setUserSimAnswer] = useState("");
@@ -320,7 +321,22 @@ function App() {
             </span>
           </div>
 
-          <div style={{ display: "flex", alignItems: "center", gap: "20px" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
+            <div style={{ display: "flex", gap: "8px" }}>
+              <button
+                className={`profile-nav-btn ${activeSessionTab === "live" ? "active" : ""}`}
+                onClick={() => setActiveSessionTab("live")}
+              >
+                <Video size={14} /> Live Chamber
+              </button>
+              <button
+                className={`profile-nav-btn ${activeSessionTab === "modules" ? "active" : ""}`}
+                onClick={() => setActiveSessionTab("modules")}
+              >
+                <Layers size={14} /> Interview Modules
+              </button>
+            </div>
+
             <div className="session-timer">
               <Clock size={18} color="#10b981" /> {formatTimer(sessionTime)}
             </div>
@@ -330,8 +346,14 @@ function App() {
           </div>
         </div>
 
-        {/* Live Session Body */}
-        <div className="session-body">
+        {activeSessionTab === "modules" ? (
+          <InterviewModules
+            onBack={() => setActiveSessionTab("live")}
+            onOpenChamber={() => setActiveSessionTab("live")}
+          />
+        ) : (
+          /* Live Session Body */
+          <div className="session-body">
           {/* Left Column: AI Avatar & Question */}
           <div className="session-card">
             <div className="ai-evaluator-box">
@@ -465,6 +487,7 @@ function App() {
             )}
           </div>
         </div>
+        )}
       </div>
     );
   }
@@ -1224,13 +1247,25 @@ function App() {
                       Your AI Senior Evaluator is waiting in the private session chamber for <strong>{jobRole}</strong> ({difficulty} Difficulty).
                     </p>
 
-                    <button
-                      className="btn-primary"
-                      style={{ width: "100%", justifyContent: "center", padding: "16px" }}
-                      onClick={handleEnterLiveChamber}
-                    >
-                      Enter Live Interview Chamber <ChevronRight size={18} />
-                    </button>
+                    <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
+                      <button
+                        className="btn-primary"
+                        style={{ width: "100%", justifyContent: "center", padding: "14px" }}
+                        onClick={handleEnterLiveChamber}
+                      >
+                        Enter Live Interview Chamber <ChevronRight size={18} />
+                      </button>
+                      <button
+                        className="btn-secondary"
+                        style={{ width: "100%", justifyContent: "center", padding: "12px" }}
+                        onClick={() => {
+                          setIsModalOpen(false);
+                          setCurrentView("modules");
+                        }}
+                      >
+                        <Layers size={16} /> Open Interview Modules Dashboard
+                      </button>
+                    </div>
                   </div>
                 )}
               </div>

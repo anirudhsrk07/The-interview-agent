@@ -365,6 +365,8 @@ export default function InterviewModules({ onBack, onOpenChamber }) {
                   className={`glass-panel module-card ${card.colorClass}`}
                   whileHover={{ y: -6, borderColor: "rgba(212, 175, 55, 0.4)" }}
                   transition={{ duration: 0.2 }}
+                  onClick={() => setActiveModule(card.id)}
+                  style={{ cursor: "pointer" }}
                 >
                   <div className="module-card-top">
                     <div className={`module-icon-box ${card.colorClass}`}>
