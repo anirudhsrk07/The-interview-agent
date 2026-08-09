@@ -1178,117 +1178,205 @@ body {
   color: var(--gold-light);
 }
 
-/* Pricing Grid */
-.pricing-toggle-wrapper {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 12px;
-  margin-bottom: 40px;
-}
-
-.toggle-switch {
-  width: 56px;
-  height: 30px;
-  background: rgba(255, 255, 255, 0.08);
-  border-radius: 30px;
-  padding: 3px;
-  cursor: pointer;
-  transition: background 0.3s ease;
-}
-
-.toggle-switch.active {
-  background: var(--gold-primary);
-}
-
-.switch-knob {
-  width: 24px;
-  height: 24px;
-  background: #ffffff;
-  border-radius: 50%;
-  transition: transform 0.3s ease;
-}
-
-.toggle-switch.active .switch-knob {
-  transform: translateX(26px);
-}
-
-.pricing-grid {
+/* Hackathon Pitch & Architecture Section */
+.hackathon-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 28px;
-  align-items: stretch;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
+  margin-bottom: 36px;
 }
 
-.price-card {
-  padding: 36px;
+.hackathon-card {
+  padding: 32px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  gap: 16px;
+  border: 1px solid var(--glass-border);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
+  overflow: hidden;
 }
 
-.price-card.popular {
-  border: 2px solid var(--gold-primary);
-  box-shadow: 0 0 40px rgba(212, 175, 55, 0.2);
-}
-
-.popular-ribbon {
+.hackathon-card::before {
+  content: "";
   position: absolute;
-  top: -14px;
-  left: 50%;
-  transform: translateX(-50%);
-  padding: 4px 16px;
-  background: linear-gradient(90deg, var(--gold-light), var(--gold-bronze));
-  color: #06070a;
-  font-size: 0.75rem;
-  font-weight: 800;
-  border-radius: 20px;
-  text-transform: uppercase;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--gold-primary), transparent);
+  opacity: 0.4;
 }
 
-.price-header h3 {
-  font-family: var(--font-heading);
-  font-size: 1.5rem;
-  font-weight: 700;
-  margin-bottom: 12px;
-}
-
-.price-amount {
-  font-family: var(--font-heading);
-  font-size: 3rem;
-  font-weight: 800;
-  margin-bottom: 20px;
+.hackathon-card-header {
   display: flex;
-  align-items: baseline;
-  gap: 4px;
+  align-items: center;
+  justify-content: space-between;
 }
 
-.price-amount span {
-  font-size: 1rem;
+.hackathon-icon-box {
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
+  background: rgba(212, 175, 55, 0.1);
+  border: 1px solid rgba(212, 175, 55, 0.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hackathon-badge {
+  padding: 4px 12px;
+  border-radius: 20px;
+  background: rgba(212, 175, 55, 0.12);
+  border: 1px solid rgba(212, 175, 55, 0.3);
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--gold-light);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.hackathon-card h3 {
+  font-family: var(--font-heading);
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: #ffffff;
+  margin: 4px 0 0 0;
+}
+
+.hackathon-card-desc {
+  font-size: 0.95rem;
+  color: var(--text-muted);
+  line-height: 1.6;
+  margin: 0;
+}
+
+.hackathon-tech-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.tech-pill {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 12px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  font-size: 0.8rem;
+  color: var(--platinum);
+  font-weight: 500;
+}
+
+/* Hackathon Metrics Banner */
+.hackathon-metrics-banner {
+  padding: 32px 40px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+  margin-bottom: 36px;
+  background: linear-gradient(135deg, rgba(212, 175, 55, 0.08) 0%, rgba(18, 20, 29, 0.85) 100%);
+  border: 1px solid var(--glass-border-hover);
+  border-radius: 24px;
+}
+
+.metric-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 8px;
+}
+
+.metric-icon-wrap {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background: rgba(212, 175, 55, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.metric-val {
+  font-family: var(--font-heading);
+  font-size: 2.2rem;
+  font-weight: 800;
+  line-height: 1.1;
+}
+
+.metric-label {
+  font-size: 0.85rem;
   color: var(--text-muted);
   font-weight: 500;
 }
 
-.price-features {
-  list-style: none;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  margin-bottom: 30px;
+/* Hackathon Project Roadmap Panel */
+.hackathon-roadmap-panel {
+  padding: 36px;
+  border-radius: 24px;
+  border: 1px solid var(--glass-border);
+  background: var(--bg-card);
 }
 
-.price-features li {
+.roadmap-header {
   display: flex;
   align-items: center;
-  gap: 10px;
-  font-size: 0.95rem;
-  color: var(--text-muted);
+  gap: 14px;
+  margin-bottom: 28px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
 }
 
-.price-features li svg {
-  color: var(--gold-primary);
-  flex-shrink: 0;
+.roadmap-steps {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.roadmap-step {
+  padding: 20px;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.025);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  transition: all 0.3s ease;
+}
+
+.roadmap-step.active {
+  background: rgba(212, 175, 55, 0.08);
+  border: 1px solid rgba(212, 175, 55, 0.35);
+  box-shadow: 0 0 20px rgba(212, 175, 55, 0.1);
+}
+
+.step-tag {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--gold-light);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.roadmap-step h4 {
+  font-family: var(--font-heading);
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #ffffff;
+  margin: 0;
+}
+
+.roadmap-step p {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  margin: 0;
+  line-height: 1.5;
 }
 
 /* Call to Action Banner */
@@ -1423,10 +1511,15 @@ body {
   
   .features-grid,
   .workflow-steps,
-  .testimonials-grid,
-  .pricing-grid,
+  .hackathon-grid,
   .resume-agent-grid {
     grid-template-columns: repeat(2, 1fr);
+  }
+  .hackathon-metrics-banner {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .roadmap-steps {
+    grid-template-columns: 1fr;
   }
   
   .simulator-body {
