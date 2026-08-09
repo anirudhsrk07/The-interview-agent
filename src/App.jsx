@@ -33,8 +33,10 @@ import {
   Layers,
   Flame,
   RotateCcw,
-  MicOff
+  MicOff,
+  User
 } from "lucide-react";
+import ProfilePage from "./components/Profile";
 import "./App.css";
 
 // Sample Job Roles for Quick Selection
@@ -168,6 +170,9 @@ const HACKATHON_METRICS = [
 function App() {
   // Motion Intro Overlay State (Name comes from up and stays in center for 2.5 seconds)
   const [showIntro, setShowIntro] = useState(true);
+
+  // View Navigation State ("home" | "profile")
+  const [currentView, setCurrentView] = useState("home");
 
   // Form State
   const [jobRole, setJobRole] = useState("Software Engineer");
@@ -509,7 +514,7 @@ function App() {
 
       {/* Navigation Header */}
       <nav className="navbar">
-        <div className="nav-brand" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
+        <div className="nav-brand" onClick={() => { setCurrentView("home"); window.scrollTo({ top: 0, behavior: 'smooth' }); }}>
           <div className="brand-icon-box">
             <Sparkles size={22} color="#06070a" />
           </div>
@@ -517,13 +522,38 @@ function App() {
         </div>
 
         <ul className="nav-links">
-          <li><a href="#simulator">Live Demo</a></li>
-          <li><a href="#features">Features</a></li>
-          <li><a href="#how-it-works">How it Works</a></li>
-          <li><a href="#architecture">Architecture & Pitch</a></li>
+          <li><a href="#simulator" onClick={() => setCurrentView("home")}>Live Demo</a></li>
+          <li><a href="#features" onClick={() => setCurrentView("home")}>Features</a></li>
+          <li><a href="#how-it-works" onClick={() => setCurrentView("home")}>How it Works</a></li>
+          <li><a href="#architecture" onClick={() => setCurrentView("home")}>Architecture & Pitch</a></li>
+          <li>
+            <button
+              className={`nav-link-btn ${currentView === "profile" ? "active" : ""}`}
+              onClick={() => setCurrentView("profile")}
+              style={{
+                background: "transparent",
+                border: "none",
+                color: currentView === "profile" ? "#d4af37" : "#94a3b8",
+                fontWeight: currentView === "profile" ? 700 : 500,
+                fontSize: "0.95rem",
+                cursor: "pointer",
+                padding: "4px 8px"
+              }}
+            >
+              Profile
+            </button>
+          </li>
         </ul>
 
         <div className="nav-actions">
+          <button
+            className={`profile-nav-btn ${currentView === "profile" ? "active" : ""}`}
+            onClick={() => setCurrentView("profile")}
+            title="User Profile Dashboard"
+          >
+            <User size={15} /> Profile
+          </button>
+
           <button className="replay-intro-btn" onClick={handleReplayIntro} title="Replay Motion Intro">
             <RotateCcw size={14} /> Reload
           </button>
@@ -539,36 +569,47 @@ function App() {
         </div>
       </nav>
 
-      {/* Hero Section */}
-      <section className="hero-section">
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.2 }}
-        >
-          <div className="hero-tagline-badge">
-            <Bot size={16} color="#d4af37" />
-            <span>AI-Powered Precision Interviewing</span>
-          </div>
+      {/* Conditional View Routing: Home vs Profile */}
+      {currentView === "profile" ? (
+        <ProfilePage
+          onBack={() => {
+            setCurrentView("home");
+            window.scrollTo({ top: 0, behavior: "smooth" });
+          }}
+          onLaunchChamber={handleOpenModal}
+        />
+      ) : (
+        <>
+          {/* Hero Section */}
+          <section className="hero-section">
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.2 }}
+            >
+              <div className="hero-tagline-badge">
+                <Bot size={16} color="#d4af37" />
+                <span>AI-Powered Precision Interviewing</span>
+              </div>
 
-          <h1 className="hero-title">
-            Master Every Question. <br />
-            <span className="text-gradient-gold">Perform With Distinction.</span>
-          </h1>
+              <h1 className="hero-title">
+                Master Every Question. <br />
+                <span className="text-gradient-gold">Perform With Distinction.</span>
+              </h1>
 
-          <p className="hero-description">
-            Practice technical, behavioral, and system design interviews powered by realistic AI models. Receive instant analytical feedback on speech, logic, and structure.
-          </p>
+              <p className="hero-description">
+                Practice technical, behavioral, and system design interviews powered by realistic AI models. Receive instant analytical feedback on speech, logic, and structure.
+              </p>
 
-          {/* Interactive Setup Form */}
-          <div className="hero-form-card">
-            <div className="form-header">
-              <h3>
-                <Briefcase size={20} color="#d4af37" /> Configure Your Interview
-              </h3>
-            </div>
+              {/* Interactive Setup Form */}
+              <div className="hero-form-card">
+                <div className="form-header">
+                  <h3>
+                    <Briefcase size={20} color="#d4af37" /> Configure Your Interview
+                  </h3>
+                </div>
 
-            <form onSubmit={handleLaunchChamber}>
+                <form onSubmit={handleLaunchChamber}>
               <div className="input-group">
                 <label>Job Role</label>
                 <div className="input-wrapper">
@@ -1045,6 +1086,8 @@ function App() {
           </div>
         </div>
       </footer>
+        </>
+      )}
 
       {/* Interactive Preparation Modal */}
       <AnimatePresence>
