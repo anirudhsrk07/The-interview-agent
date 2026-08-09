@@ -307,7 +307,8 @@ body {
   gap: 16px;
 }
 
-.replay-intro-btn {
+.replay-intro-btn,
+.profile-nav-btn {
   background: rgba(212, 175, 55, 0.08);
   border: 1px solid rgba(212, 175, 55, 0.2);
   color: var(--gold-primary);
@@ -315,6 +316,7 @@ body {
   border-radius: 20px;
   font-size: 0.8rem;
   font-weight: 600;
+  font-family: var(--font-body);
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -322,9 +324,12 @@ body {
   transition: all 0.2s ease;
 }
 
-.replay-intro-btn:hover {
+.replay-intro-btn:hover,
+.profile-nav-btn:hover,
+.profile-nav-btn.active {
   background: rgba(212, 175, 55, 0.18);
   border-color: var(--gold-primary);
+  color: var(--gold-light);
 }
 
 .status-badge {

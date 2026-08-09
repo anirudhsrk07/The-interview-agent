@@ -534,7 +534,7 @@ function App() {
             onClick={() => setCurrentView("profile")}
             title="User Profile Dashboard"
           >
-            <User size={15} /> Profile
+            <User size={14} /> Profile
           </button>
 
           <button className="replay-intro-btn" onClick={handleReplayIntro} title="Replay Motion Intro">
