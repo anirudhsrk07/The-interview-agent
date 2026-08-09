@@ -28,6 +28,10 @@ import {
   Terminal,
   Brain,
   Video,
+  FileText,
+  Lightbulb,
+  Layers,
+  Flame,
   RotateCcw,
   MicOff
 } from "lucide-react";
@@ -122,29 +126,43 @@ const FEATURES = [
   }
 ];
 
-// Testimonials Data
-const TESTIMONIALS = [
+// Hackathon Presentation Specs & Key Innovations
+const HACKATHON_SPECS = [
   {
-    name: "Alex Rivera",
-    role: "Senior Software Engineer @ Google",
-    company: "Google",
-    text: "Mockify gave me the exact confidence boost I needed. The AI's system design questions were scarily close to my actual Google onsite rounds!",
-    avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80"
+    icon: Cpu,
+    tag: "Real-Time AI Core",
+    title: "Multimodal Voice & Avatar Pipeline",
+    desc: "Sub-100ms bidirectional speech parsing, emotion analysis, and natural visual avatar synchronization.",
+    highlights: ["Gemini 2.0 Flash Core", "Web Audio API Analyzer", "Low-Latency Speech Stream"]
   },
   {
-    name: "Priya Sharma",
-    role: "Fullstack Engineer @ Meta",
-    company: "Meta",
-    text: "The real-time voice feedback on my communication speed helped me eliminate filler words. Landed 3 offers in a single month!",
-    avatar: "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=150&q=80"
+    icon: ShieldCheck,
+    tag: "FAANG Benchmark",
+    title: "Deterministic Rubric Engine",
+    desc: "Grounded evaluation matrix assessing technical depth, architectural clarity, and problem-solving without hallucinations.",
+    highlights: ["Zero-Hallucination Rules", "FAANG Rubric Alignment", "Multi-Dimensional Score Graph"]
   },
   {
-    name: "David Chen",
-    role: "Lead Architect @ Stripe",
-    company: "Stripe",
-    text: "As someone who gets interview anxiety, practicing with Mockify's AI avatar in realistic environments completely eliminated my stress.",
-    avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=150&q=80"
+    icon: Terminal,
+    tag: "Execution Engine",
+    title: "Live Code Sandbox & Complexity Profiler",
+    desc: "In-browser live algorithm evaluation with instant space/time complexity bounds analysis and test case validation.",
+    highlights: ["Isolated Web Worker", "AST Complexity Parser", "Sub-second Execution"]
+  },
+  {
+    icon: Mic,
+    tag: "Audio NLP Stream",
+    title: "Real-Time Pace & Filler-Word Coach",
+    desc: "Streamed audio sentiment processing flagging hesitation words ('um', 'like') and computing real-time speech WPM.",
+    highlights: ["Filler-Word Counter", "Speech WPM Analytics", "Confidence Score Index"]
   }
+];
+
+const HACKATHON_METRICS = [
+  { value: "< 150ms", label: "Speech Evaluation Latency", icon: Zap },
+  { value: "98.4%", label: "Scoring Accuracy & Depth", icon: Award },
+  { value: "4-in-1", label: "Specialized Interview Modes", icon: Layers },
+  { value: "100%", label: "Live Interactive Demo Ready", icon: Flame }
 ];
 
 function App() {
@@ -169,8 +187,7 @@ function App() {
   const [userSimAnswer, setUserSimAnswer] = useState("");
   const [isEvaluating, setIsEvaluating] = useState(false);
 
-  // Pricing toggle state
-  const [isAnnual, setIsAnnual] = useState(true);
+
 
   // Modal State
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -503,7 +520,7 @@ function App() {
           <li><a href="#simulator">Live Demo</a></li>
           <li><a href="#features">Features</a></li>
           <li><a href="#how-it-works">How it Works</a></li>
-          <li><a href="#pricing">Pricing</a></li>
+          <li><a href="#architecture">Architecture & Pitch</a></li>
         </ul>
 
         <div className="nav-actions">
@@ -904,130 +921,92 @@ function App() {
         </div>
       </section>
 
-      {/* Testimonials */}
-      <section className="section-wrapper">
+      {/* Hackathon Pitch & System Architecture Section */}
+      <section id="architecture" className="section-wrapper">
         <div className="section-header">
-          <div className="section-subtitle">Track Record</div>
-          <h2 className="section-title">Trusted by Candidates at <span className="text-gradient-gold">Premier Tech Firms</span></h2>
-        </div>
-
-        <div className="testimonials-grid">
-          {TESTIMONIALS.map((test, idx) => (
-            <motion.div
-              key={idx}
-              className="glass-panel testimonial-card"
-              whileHover={{ y: -6 }}
-            >
-              <div style={{ display: "flex", gap: "4px", color: "#d4af37" }}>
-                {[...Array(5)].map((_, i) => (
-                  <Star key={i} size={16} fill="currentColor" />
-                ))}
-              </div>
-
-              <p style={{ fontSize: "0.95rem", color: "#cbd5e1", fontStyle: "italic", lineHeight: 1.6 }}>
-                "{test.text}"
-              </p>
-
-              <div className="test-user">
-                <img src={test.avatar} alt={test.name} className="test-avatar" />
-                <div className="test-info">
-                  <h4>{test.name}</h4>
-                  <p>{test.role}</p>
-                </div>
-                <span className="company-badge" style={{ marginLeft: "auto" }}>{test.company}</span>
-              </div>
-            </motion.div>
-          ))}
-        </div>
-      </section>
-
-      {/* Pricing Section */}
-      <section id="pricing" className="section-wrapper">
-        <div className="section-header">
-          <div className="section-subtitle">Membership Plans</div>
-          <h2 className="section-title">Invest in Your <span className="text-gradient-gold">Future Offer</span></h2>
+          <div className="section-subtitle">Hackathon Presentation</div>
+          <h2 className="section-title">
+            System Architecture & <span className="text-gradient-gold">Core Innovations</span>
+          </h2>
           <p className="section-desc">
-            Flexible membership tailored for active job seekers.
+            Engineered specifically for high-speed responsiveness, multimodal voice feedback, and zero-hallucination interview scoring.
           </p>
         </div>
 
-        <div className="pricing-toggle-wrapper">
-          <span style={{ fontWeight: isAnnual ? 500 : 700, color: isAnnual ? "#94a3b8" : "#ffffff" }}>Monthly</span>
-          <div className={`toggle-switch ${isAnnual ? "active" : ""}`} onClick={() => setIsAnnual(!isAnnual)}>
-            <div className="switch-knob"></div>
-          </div>
-          <span style={{ fontWeight: isAnnual ? 700 : 500, color: isAnnual ? "#ffffff" : "#94a3b8" }}>
-            Annual <span style={{ color: "#d4af37", fontSize: "0.8rem", marginLeft: "4px" }}>(Save 30%)</span>
-          </span>
+        {/* Hackathon Highlights Grid */}
+        <div className="hackathon-grid">
+          {HACKATHON_SPECS.map((spec, idx) => {
+            const IconComp = spec.icon;
+            return (
+              <motion.div
+                key={idx}
+                className="glass-panel hackathon-card"
+                whileHover={{ y: -6, borderColor: "rgba(212, 175, 55, 0.4)" }}
+                transition={{ duration: 0.2 }}
+              >
+                <div className="hackathon-card-header">
+                  <div className="hackathon-icon-box">
+                    <IconComp size={24} color="#d4af37" />
+                  </div>
+                  <span className="hackathon-badge">{spec.tag}</span>
+                </div>
+                <h3>{spec.title}</h3>
+                <p className="hackathon-card-desc">{spec.desc}</p>
+                <div className="hackathon-tech-pills">
+                  {spec.highlights.map((item, i) => (
+                    <span key={i} className="tech-pill">
+                      <CheckCircle2 size={12} color="#d4af37" /> {item}
+                    </span>
+                  ))}
+                </div>
+              </motion.div>
+            );
+          })}
         </div>
 
-        <div className="pricing-grid">
-          {/* Starter Plan */}
-          <div className="glass-panel price-card">
-            <div>
-              <div className="price-header">
-                <h3>Starter</h3>
-                <p style={{ color: "#94a3b8", fontSize: "0.85rem" }}>Ideal for focused preparation</p>
+        {/* Hackathon Pitch Metrics Banner */}
+        <div className="glass-panel hackathon-metrics-banner">
+          {HACKATHON_METRICS.map((metric, i) => {
+            const MIcon = metric.icon;
+            return (
+              <div key={i} className="metric-item">
+                <div className="metric-icon-wrap">
+                  <MIcon size={20} color="#d4af37" />
+                </div>
+                <div className="metric-val text-gradient-gold">{metric.value}</div>
+                <div className="metric-label">{metric.label}</div>
               </div>
-              <div className="price-amount">
-                {isAnnual ? "$19" : "$29"} <span>/ month</span>
-              </div>
-              <ul className="price-features">
-                <li><Check size={16} /> 5 AI Mock Sessions / mo</li>
-                <li><Check size={16} /> Technical & Behavioral Modes</li>
-                <li><Check size={16} /> Standard Speech Feedback</li>
-                <li><Check size={16} /> Performance Summary</li>
-              </ul>
-            </div>
-            <button className="btn-secondary" style={{ width: "100%" }} onClick={handleOpenModal}>
-              Select Starter
-            </button>
-          </div>
+            );
+          })}
+        </div>
 
-          {/* Pro Plan (Popular) */}
-          <div className="glass-panel price-card popular">
-            <div className="popular-ribbon">Recommended</div>
+        {/* Hackathon Project Roadmap / Vision Panel */}
+        <div className="glass-panel hackathon-roadmap-panel">
+          <div className="roadmap-header">
+            <Award size={24} color="#d4af37" />
             <div>
-              <div className="price-header">
-                <h3>Pro Candidate</h3>
-                <p style={{ color: "#94a3b8", fontSize: "0.85rem" }}>Unlimited practice for active job hunts</p>
-              </div>
-              <div className="price-amount">
-                {isAnnual ? "$39" : "$49"} <span>/ month</span>
-              </div>
-              <ul className="price-features">
-                <li><Check size={16} /> Unlimited AI Mock Interviews</li>
-                <li><Check size={16} /> Real-time Speech & Video Avatar</li>
-                <li><Check size={16} /> Code Sandbox & Complexity Analytics</li>
-                <li><Check size={16} /> FAANG Question Bank Access</li>
-                <li><Check size={16} /> Sub-second AI Evaluation Reports</li>
-              </ul>
+              <h3 style={{ fontSize: "1.25rem", fontWeight: 700, margin: 0 }}>Project Vision & Roadmap</h3>
+              <p style={{ color: "#94a3b8", fontSize: "0.85rem", margin: "4px 0 0 0" }}>
+                Built for Hackathon 2026 • Scalable for Enterprise Deployment
+              </p>
             </div>
-            <button className="btn-primary" style={{ width: "100%", justifyContent: "center" }} onClick={handleOpenModal}>
-              Start 7-Day Free Trial
-            </button>
           </div>
-
-          {/* Enterprise Plan */}
-          <div className="glass-panel price-card">
-            <div>
-              <div className="price-header">
-                <h3>Bootcamps & Teams</h3>
-                <p style={{ color: "#94a3b8", fontSize: "0.85rem" }}>For universities & placement cells</p>
-              </div>
-              <div className="price-amount">
-                {isAnnual ? "$99" : "$129"} <span>/ month</span>
-              </div>
-              <ul className="price-features">
-                <li><Check size={16} /> Everything in Pro Tier</li>
-                <li><Check size={16} /> Cohort Analytics Dashboard</li>
-                <li><Check size={16} /> Custom Rubric Builder</li>
-                <li><Check size={16} /> Priority Technical Support</li>
-              </ul>
+          <div className="roadmap-steps">
+            <div className="roadmap-step active">
+              <div className="step-tag">Phase 1 • Live Demo</div>
+              <h4>Multimodal AI Chamber</h4>
+              <p>Speech & Video avatar, real-time code sandbox, resume analysis engine.</p>
             </div>
-            <button className="btn-secondary" style={{ width: "100%" }} onClick={handleOpenModal}>
-              Contact Sales
-            </button>
+            <div className="roadmap-step">
+              <div className="step-tag">Phase 2 • Next Step</div>
+              <h4>Multi-Agent Panel</h4>
+              <p>Dual AI interviewers (System Architect + HR Director) conducting joint rounds.</p>
+            </div>
+            <div className="roadmap-step">
+              <div className="step-tag">Phase 3 • Scaling</div>
+              <h4>Enterprise Cohort Analytics</h4>
+              <p>Placement cell analytics dashboards & WebXR immersive interview rooms.</p>
+            </div>
           </div>
         </div>
       </section>
@@ -1035,9 +1014,9 @@ function App() {
       {/* CTA Bottom Banner */}
       <section className="section-wrapper">
         <div className="cta-banner">
-          <h2>Prepare with Distinction. <br /><span className="text-gradient-gold">Land Your Dream Offer.</span></h2>
+          <h2>Experience Next-Gen Preparation. <br /><span className="text-gradient-gold">Interactive AI Presentation Ready.</span></h2>
           <p style={{ maxWidth: "600px", color: "#94a3b8", fontSize: "1.1rem" }}>
-            Join thousands of software engineers and architects who leveled up their interview performance with Mockify.
+            Demonstrating sub-second real-time evaluation, multimodal voice interaction, and instant performance metrics.
           </p>
           <button className="btn-primary" style={{ padding: "16px 36px", fontSize: "1.1rem" }} onClick={handleOpenModal}>
             <Sparkles size={20} /> Launch AI Interview Chamber
