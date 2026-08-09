@@ -38,6 +38,7 @@ import {
 } from "lucide-react";
 import ProfilePage from "./components/Profile";
 import InterviewModules from "./components/InterviewModules";
+import Chatbot from "./components/Chatbot";
 import "./App.css";
 
 // Sample Job Roles for Quick Selection
@@ -172,8 +173,11 @@ function App() {
   // Motion Intro Overlay State (Name comes from up and stays in center for 2.5 seconds)
   const [showIntro, setShowIntro] = useState(true);
 
-  // View Navigation State ("home" | "profile")
+  // View Navigation State ("home" | "profile" | "modules")
   const [currentView, setCurrentView] = useState("home");
+
+  // Global Chatbot State
+  const [isChatbotOpen, setIsChatbotOpen] = useState(false);
 
   // Form State
   const [jobRole, setJobRole] = useState("Software Engineer");
@@ -597,10 +601,14 @@ function App() {
             <RotateCcw size={14} /> Reload
           </button>
 
-          <div className="status-badge">
-            <span className="pulse-dot"></span>
-            AI Core Active
-          </div>
+          <button
+            className="navbar-ai-assistant-btn"
+            onClick={() => setIsChatbotOpen(!isChatbotOpen)}
+            title="Open Mockify AI Assistant"
+          >
+            <span className="pulse-dot-gold"></span>
+            <Bot size={15} color="#d4af37" /> Mockify AI Assistant
+          </button>
 
           <button className="btn-primary" onClick={handleOpenModal}>
             Start Session <ArrowRight size={16} />
@@ -1273,6 +1281,13 @@ function App() {
           </motion.div>
         )}
       </AnimatePresence>
+
+      {/* Global Mockify AI Assistant Chatbot */}
+      <Chatbot
+        isOpen={isChatbotOpen}
+        onToggle={setIsChatbotOpen}
+        userContext={{ jobRole, experience, difficulty }}
+      />
     </div>
   );
 }
