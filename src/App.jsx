@@ -34,11 +34,17 @@ import {
   Flame,
   RotateCcw,
   MicOff,
-  User
+  User,
+  LogOut,
+  ChevronDown,
+  Settings
 } from "lucide-react";
 import ProfilePage from "./components/Profile";
 import InterviewModules from "./components/InterviewModules";
 import Chatbot from "./components/Chatbot";
+import Login from "./components/Login";
+import Signup from "./components/Signup";
+import { getCurrentUser, logout } from "./services/authService";
 import "./App.css";
 
 // Sample Job Roles for Quick Selection
@@ -173,11 +179,31 @@ function App() {
   // Motion Intro Overlay State (Name comes from up and stays in center for 2.5 seconds)
   const [showIntro, setShowIntro] = useState(true);
 
-  // View Navigation State ("home" | "profile" | "modules")
+  // View Navigation State ("home" | "login" | "signup" | "profile" | "modules" | "dashboard")
   const [currentView, setCurrentView] = useState("home");
+
+  // Authentication State
+  const [currentUser, setCurrentUser] = useState(() => getCurrentUser());
+  const [showUserDropdown, setShowUserDropdown] = useState(false);
 
   // Global Chatbot State
   const [isChatbotOpen, setIsChatbotOpen] = useState(false);
+
+  const handleLogout = () => {
+    logout();
+    setCurrentUser(null);
+    setShowUserDropdown(false);
+    setCurrentView("login");
+  };
+
+  const navigateToView = (viewName) => {
+    const protectedViews = ["modules", "profile", "feedback", "dashboard"];
+    if (protectedViews.includes(viewName) && !currentUser) {
+      setCurrentView("login");
+    } else {
+      setCurrentView(viewName);
+    }
+  };
 
   // Form State
   const [jobRole, setJobRole] = useState("Software Engineer");
@@ -554,16 +580,16 @@ function App() {
             <a
               href="#home"
               style={{ color: currentView === "home" ? "var(--gold-light)" : "var(--text-muted)", fontWeight: currentView === "home" ? 700 : 500 }}
-              onClick={(e) => { e.preventDefault(); setCurrentView("home"); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
+              onClick={(e) => { e.preventDefault(); navigateToView("home"); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
             >
-              Home
+              {currentUser ? "Dashboard" : "Home"}
             </a>
           </li>
           <li>
             <a
               href="#modules"
               style={{ color: currentView === "modules" ? "var(--gold-light)" : "var(--text-muted)", fontWeight: currentView === "modules" ? 700 : 500 }}
-              onClick={(e) => { e.preventDefault(); setCurrentView("modules"); }}
+              onClick={(e) => { e.preventDefault(); navigateToView("modules"); }}
             >
               Interview Modules
             </a>
@@ -572,30 +598,73 @@ function App() {
             <a
               href="#profile"
               style={{ color: currentView === "profile" ? "var(--gold-light)" : "var(--text-muted)", fontWeight: currentView === "profile" ? 700 : 500 }}
-              onClick={(e) => { e.preventDefault(); setCurrentView("profile"); }}
+              onClick={(e) => { e.preventDefault(); navigateToView("profile"); }}
             >
               Profile
             </a>
           </li>
           <li>
             <a
-              href="#results"
+              href="#feedback"
               style={{ color: "var(--text-muted)" }}
-              onClick={(e) => { e.preventDefault(); setCurrentView("modules"); }}
+              onClick={(e) => { e.preventDefault(); navigateToView("modules"); }}
             >
-              Results
+              Feedback
             </a>
           </li>
         </ul>
 
         <div className="nav-actions">
-          <button
-            className={`profile-nav-btn ${currentView === "profile" ? "active" : ""}`}
-            onClick={() => setCurrentView("profile")}
-            title="User Profile Dashboard"
-          >
-            <User size={14} /> Profile
-          </button>
+          {currentUser ? (
+            <div style={{ position: "relative" }}>
+              <button
+                className="user-avatar-btn"
+                onClick={() => setShowUserDropdown(!showUserDropdown)}
+                title="User Menu"
+              >
+                <User size={15} /> {currentUser.name ? currentUser.name.split(" ")[0] : "User"} <ChevronDown size={14} />
+              </button>
+
+              {showUserDropdown && (
+                <div className="user-dropdown-menu">
+                  <button
+                    className="dropdown-item-btn"
+                    onClick={() => { setShowUserDropdown(false); navigateToView("profile"); }}
+                  >
+                    <User size={14} /> Profile
+                  </button>
+                  <button
+                    className="dropdown-item-btn"
+                    onClick={() => { setShowUserDropdown(false); navigateToView("profile"); }}
+                  >
+                    <Settings size={14} /> Settings
+                  </button>
+                  <button
+                    className="dropdown-item-btn logout"
+                    onClick={handleLogout}
+                  >
+                    <LogOut size={14} /> Logout
+                  </button>
+                </div>
+              )}
+            </div>
+          ) : (
+            <>
+              <button
+                className="profile-nav-btn"
+                onClick={() => setCurrentView("login")}
+              >
+                Login
+              </button>
+              <button
+                className="btn-primary"
+                onClick={() => setCurrentView("signup")}
+                style={{ padding: "8px 18px", fontSize: "0.85rem" }}
+              >
+                Get Started <ArrowRight size={14} />
+              </button>
+            </>
+          )}
 
           <button className="replay-intro-btn" onClick={handleReplayIntro} title="Replay Motion Intro">
             <RotateCcw size={14} /> Reload
@@ -607,7 +676,7 @@ function App() {
             title="Open Mockify AI Assistant"
           >
             <span className="pulse-dot-gold"></span>
-            <Bot size={15} color="#d4af37" /> Mockify AI Assistant
+            <Bot size={15} color="#d4af37" /> AI Assistant
           </button>
 
           <button className="btn-primary" onClick={handleOpenModal}>
@@ -616,8 +685,24 @@ function App() {
         </div>
       </nav>
 
-      {/* Conditional View Routing: Home vs Modules vs Profile */}
-      {currentView === "modules" ? (
+      {/* View Routing */}
+      {currentView === "login" ? (
+        <Login
+          onLoginSuccess={(user) => {
+            setCurrentUser(user);
+            setCurrentView("home");
+          }}
+          onNavigateSignup={() => setCurrentView("signup")}
+        />
+      ) : currentView === "signup" ? (
+        <Signup
+          onSignupSuccess={(user) => {
+            setCurrentUser(user);
+            setCurrentView("home");
+          }}
+          onNavigateLogin={() => setCurrentView("login")}
+        />
+      ) : currentView === "modules" ? (
         <InterviewModules
           onBack={() => {
             setCurrentView("home");
