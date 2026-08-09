@@ -526,23 +526,6 @@ function App() {
           <li><a href="#features" onClick={() => setCurrentView("home")}>Features</a></li>
           <li><a href="#how-it-works" onClick={() => setCurrentView("home")}>How it Works</a></li>
           <li><a href="#architecture" onClick={() => setCurrentView("home")}>Architecture & Pitch</a></li>
-          <li>
-            <button
-              className={`nav-link-btn ${currentView === "profile" ? "active" : ""}`}
-              onClick={() => setCurrentView("profile")}
-              style={{
-                background: "transparent",
-                border: "none",
-                color: currentView === "profile" ? "#d4af37" : "#94a3b8",
-                fontWeight: currentView === "profile" ? 700 : 500,
-                fontSize: "0.95rem",
-                cursor: "pointer",
-                padding: "4px 8px"
-              }}
-            >
-              Profile
-            </button>
-          </li>
         </ul>
 
         <div className="nav-actions">
