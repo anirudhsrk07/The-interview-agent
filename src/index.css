@@ -1,0 +1,25 @@
+:root {
+  --bg: #090a0f;
+  --text: #a0a5b5;
+  --text-h: #f1f5f9;
+  --accent-gold: #d4af37;
+  --accent-gold-glow: rgba(212, 175, 55, 0.25);
+  
+  --sans: 'Plus Jakarta Sans', sans-serif;
+  --heading: 'Outfit', sans-serif;
+  --brand: 'Cinzel', serif;
+
+  font-family: var(--sans);
+  background-color: var(--bg);
+  color: var(--text);
+  color-scheme: dark;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #090a0f;
+  overflow-x: hidden;
+}
