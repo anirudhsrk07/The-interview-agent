@@ -37,6 +37,7 @@ import {
   User
 } from "lucide-react";
 import ProfilePage from "./components/Profile";
+import InterviewModules from "./components/InterviewModules";
 import "./App.css";
 
 // Sample Job Roles for Quick Selection
@@ -522,10 +523,42 @@ function App() {
         </div>
 
         <ul className="nav-links">
-          <li><a href="#simulator" onClick={() => setCurrentView("home")}>Live Demo</a></li>
-          <li><a href="#features" onClick={() => setCurrentView("home")}>Features</a></li>
-          <li><a href="#how-it-works" onClick={() => setCurrentView("home")}>How it Works</a></li>
-          <li><a href="#architecture" onClick={() => setCurrentView("home")}>Architecture & Pitch</a></li>
+          <li>
+            <a
+              href="#home"
+              style={{ color: currentView === "home" ? "var(--gold-light)" : "var(--text-muted)", fontWeight: currentView === "home" ? 700 : 500 }}
+              onClick={(e) => { e.preventDefault(); setCurrentView("home"); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
+            >
+              Home
+            </a>
+          </li>
+          <li>
+            <a
+              href="#modules"
+              style={{ color: currentView === "modules" ? "var(--gold-light)" : "var(--text-muted)", fontWeight: currentView === "modules" ? 700 : 500 }}
+              onClick={(e) => { e.preventDefault(); setCurrentView("modules"); }}
+            >
+              Interview Modules
+            </a>
+          </li>
+          <li>
+            <a
+              href="#profile"
+              style={{ color: currentView === "profile" ? "var(--gold-light)" : "var(--text-muted)", fontWeight: currentView === "profile" ? 700 : 500 }}
+              onClick={(e) => { e.preventDefault(); setCurrentView("profile"); }}
+            >
+              Profile
+            </a>
+          </li>
+          <li>
+            <a
+              href="#results"
+              style={{ color: "var(--text-muted)" }}
+              onClick={(e) => { e.preventDefault(); setCurrentView("modules"); }}
+            >
+              Results
+            </a>
+          </li>
         </ul>
 
         <div className="nav-actions">
@@ -552,8 +585,16 @@ function App() {
         </div>
       </nav>
 
-      {/* Conditional View Routing: Home vs Profile */}
-      {currentView === "profile" ? (
+      {/* Conditional View Routing: Home vs Modules vs Profile */}
+      {currentView === "modules" ? (
+        <InterviewModules
+          onBack={() => {
+            setCurrentView("home");
+            window.scrollTo({ top: 0, behavior: "smooth" });
+          }}
+          onOpenChamber={handleOpenModal}
+        />
+      ) : currentView === "profile" ? (
         <ProfilePage
           onBack={() => {
             setCurrentView("home");
@@ -1108,7 +1149,7 @@ function App() {
                     <div className="input-group">
                       <label>Job Role</label>
                       <div className="input-wrapper">
-                        <Briefcase size={18} className="input-icon" />
+                        <Briefcase size={0} className="input-icon" />
                         <input
                           type="text"
                           value={jobRole}
@@ -1122,7 +1163,7 @@ function App() {
                     <div className="input-group">
                       <label>Experience</label>
                       <div className="input-wrapper">
-                        <Sliders size={18} className="input-icon" />
+                        <Sliders size={0} className="input-icon" />
                         <select
                           value={experience}
                           onChange={(e) => setExperience(e.target.value)}
