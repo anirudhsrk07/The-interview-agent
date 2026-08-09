@@ -37,13 +37,14 @@ import {
   User,
   LogOut,
   ChevronDown,
-  Settings
+  Settings as SettingsIcon
 } from "lucide-react";
 import ProfilePage from "./components/Profile";
 import InterviewModules from "./components/InterviewModules";
 import Chatbot from "./components/Chatbot";
 import Login from "./components/Login";
 import Signup from "./components/Signup";
+import SettingsPage from "./components/Settings";
 import { getCurrentUser, logout } from "./services/authService";
 import "./App.css";
 
@@ -197,7 +198,7 @@ function App() {
   };
 
   const navigateToView = (viewName) => {
-    const protectedViews = ["modules", "profile", "feedback", "dashboard"];
+    const protectedViews = ["modules", "profile", "feedback", "dashboard", "settings"];
     if (protectedViews.includes(viewName) && !currentUser) {
       setCurrentView("login");
     } else {
@@ -635,9 +636,9 @@ function App() {
                   </button>
                   <button
                     className="dropdown-item-btn"
-                    onClick={() => { setShowUserDropdown(false); navigateToView("profile"); }}
+                    onClick={() => { setShowUserDropdown(false); navigateToView("settings"); }}
                   >
-                    <Settings size={14} /> Settings
+                    <SettingsIcon size={14} /> Settings
                   </button>
                   <button
                     className="dropdown-item-btn logout"
@@ -717,6 +718,14 @@ function App() {
             window.scrollTo({ top: 0, behavior: "smooth" });
           }}
           onLaunchChamber={handleOpenModal}
+        />
+      ) : currentView === "settings" ? (
+        <SettingsPage
+          onNavigateModules={() => {
+            setCurrentView("modules");
+            window.scrollTo({ top: 0, behavior: "smooth" });
+          }}
+          onLogout={handleLogout}
         />
       ) : (
         <>
