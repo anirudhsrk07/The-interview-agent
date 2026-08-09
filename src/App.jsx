@@ -179,11 +179,11 @@ function App() {
   // Motion Intro Overlay State (Name comes from up and stays in center for 2.5 seconds)
   const [showIntro, setShowIntro] = useState(true);
 
-  // View Navigation State ("home" | "login" | "signup" | "profile" | "modules" | "dashboard")
-  const [currentView, setCurrentView] = useState("home");
-
   // Authentication State
   const [currentUser, setCurrentUser] = useState(() => getCurrentUser());
+
+  // View Navigation State ("home" | "login" | "signup" | "profile" | "modules" | "dashboard")
+  const [currentView, setCurrentView] = useState(() => (getCurrentUser() ? "home" : "login"));
   const [showUserDropdown, setShowUserDropdown] = useState(false);
 
   // Global Chatbot State
